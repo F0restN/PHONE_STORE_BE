@@ -41,16 +41,60 @@ CREATE TABLE public.orders
     payment_method payment,
     PRIMARY KEY (order_id)
 );
+-- ### Added store table ######################
+CREATE TABLE public.store
+(
+	store_id integer NOT NULL,
+    store_name character varying(100) NOT NULL,
+    region_id integer,
+    PRIMARY KEY (store_id)
+);
 
+-- ### Added category and store_id ##########################
 CREATE TABLE public.products
 (
     product_id SERIAL NOT NULL,
+    category category_type,
     name character varying(50) NOT NULL,
     price real NOT NULL,
     description text NOT NULL,
     image_url character varying,
     PRIMARY KEY (product_id)
 );
+
+CREATE TYPE "category_type" AS ENUM (
+  'Android',
+  'iPhone'
+);
+
+-- ################### REGION TABLE #######################
+CREATE TABLE public.region
+(
+region_id integer NOT NULL,
+region_name character varying(100),
+manager_id integer,
+PRIMARY KEY(region_id)
+);
+
+-- ################### Manager TABLE #######################
+CREATE TABLE public.manager
+(
+manager_id integer NOT NULL,
+manager_name character varying(100),
+store_id integer,
+PRIMARY KEY(manager_id)
+);
+
+
+-- ################### Salesperson TABLE #######################
+CREATE TABLE public.salesperson
+(
+sp_id integer NOT NULL,
+sp_name character varying(100),
+store_id integer,
+PRIMARY KEY(sp_id)
+);
+
 
 CREATE TABLE public."resetTokens"
 (
@@ -73,6 +117,7 @@ CREATE TABLE public.reviews
     PRIMARY KEY (user_id, product_id)
 );
 
+-- ## Added business as ENUM
 CREATE TABLE public.users
 (
     user_id SERIAL NOT NULL,
@@ -86,62 +131,94 @@ CREATE TABLE public.users
     city character varying(100),
     state character varying(100),
     country character varying(100),
+    business business_type,
     created_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (user_id)
 );
 
+CREATE TYPE "business_type" AS ENUM (
+  'Student',
+  'Retailer',
+  'IT'
+);
+-- Ref:"customer"."user_id" < "cart"."user_id"
 ALTER TABLE public.cart
     ADD FOREIGN KEY (user_id)
     REFERENCES public.users (user_id)
     ON DELETE SET NULL
     NOT VALID;
 
-
+-- Ref:"cart"."id" < "cart_item"."cart_id"
 ALTER TABLE public.cart_item
     ADD FOREIGN KEY (cart_id)
     REFERENCES public.cart (id)
     ON DELETE CASCADE
     NOT VALID;
 
-
+-- Ref:"products"."product_id" < "cart_item"."product_id"
 ALTER TABLE public.cart_item
     ADD FOREIGN KEY (product_id)
     REFERENCES public.products (product_id)
     ON DELETE SET NULL
     NOT VALID;
 
-
+-- Ref:"orders"."order_id" < "order_item"."order_id"
 ALTER TABLE public.order_item
     ADD FOREIGN KEY (order_id)
     REFERENCES public.orders (order_id)
     ON DELETE CASCADE
     NOT VALID;
 
-
+-- Ref:"products"."product_id" < "order_item"."product_id"
 ALTER TABLE public.order_item
     ADD FOREIGN KEY (product_id)
     REFERENCES public.products (product_id)
     ON DELETE SET NULL
     NOT VALID;
 
-
+-- Ref:"customer"."user_id" < "orders"."user_id"
 ALTER TABLE public.orders
     ADD FOREIGN KEY (user_id)
     REFERENCES public.users (user_id)
     ON DELETE CASCADE
     NOT VALID;
 
-
+-- Ref:"products"."product_id" < "reviews"."product_id"
 ALTER TABLE public.reviews
     ADD FOREIGN KEY (product_id)
     REFERENCES public.products (product_id)
     ON DELETE SET NULL
     NOT VALID;
 
-
+-- Ref:"customer"."user_id" < "reviews"."user_id"
 ALTER TABLE public.reviews
     ADD FOREIGN KEY (user_id)
     REFERENCES public.users (user_id)
+    ON DELETE SET NULL
+    NOT VALID;
+Ref:"store"."store_id" < "products"."store_id"
+ALTER TABLE public.products
+    ADD FOREIGN KEY (store_id)
+    REFERENCES public.store (store_id)
+    ON DELETE SET NULL
+    NOT VALID;
+Ref:"region"."region_id" < "store"."region_id"
+ALTER TABLE public.store
+    ADD FOREIGN KEY (region_id)
+    REFERENCES public.region (region_id)
+    ON DELETE SET NULL
+    NOT VALID;
+Ref:"manager"."manager_id" < "region"."manager_id"
+ALTER TABLE public.region
+    ADD FOREIGN KEY (manager_id)
+    REFERENCES public.manager (manager_id)
+    ON DELETE SET NULL
+    NOT VALID;
+
+Ref:"store"."store_id" < "salesperson"."store_id"
+ALTER TABLE public.salesperson
+    ADD FOREIGN KEY (store_id)
+    REFERENCES public.store (store_id)
     ON DELETE SET NULL
     NOT VALID;
 
@@ -175,3 +252,7 @@ INSERT INTO public.products (product_id, name, price, description, image_url) VA
 Sweetened only with vineyard ripened grape and fruit juices, 100 percent from fruit Authentic French Recipe, Gently cooked to preserve the natural flavor of the fruit, Gluten-Free, Only Natural Sugars, Non-Genetically Modified Ingredients, No Cane Sugars, Corn Syrups, Artificial Sweeteners, Colors, Flavors, or Preservatives, All Natural Ingredients', 'https://i.ibb.co/znrFfPt/jam.jpg');
 INSERT INTO public.products (product_id, name, price, description, image_url) VALUES (19, 'Rice - 7 Grain Blend', 732.36, 'Rice with a brown hue. Barley. Millet. Flax seed is a type of seed. Wheat. Quinoa in a red color. Rice from the wild. Microwave for 90 seconds in the pouch. USDA certified organic. 100% Whole Grain: 44 g or more per serving Consume 48 g or more of whole grains per day. You''re only 90 seconds away from a nutritious side dish or a meal on its own. It''s that easy!', 'https://i.ibb.co/Srv1Hjr/rice.png');
 INSERT INTO public.products (product_id, name, price, description, image_url) VALUES (20, 'Saskatoon Berries - Frozen', 606.2, 'Raw plant-based superfood jam-packed with nutrients to get you through the day! We can keep all of the benefits and flavors of fresh Saskatoon Berries by freeze drying them, making them an easy on-the-go treat! They''re great as a healthy snack or added to cereals, smoothies, salads, and baking. A healthy diet high in vegetables and fruits may lower the risk of certain types of cancer.', 'https://i.ibb.co/ZcPjq1Y/berry.png');
+
+
+
+
