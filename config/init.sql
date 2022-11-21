@@ -80,7 +80,6 @@ CREATE TABLE public.manager
 (
 manager_id integer NOT NULL,
 manager_name character varying(100),
-store_id integer,
 PRIMARY KEY(manager_id)
 );
 
