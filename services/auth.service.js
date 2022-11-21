@@ -125,6 +125,7 @@ class AuthService {
           fullname,
           username,
         },
+        roles
       };
     } catch (error) {
       throw new ErrorHandler(error.statusCode, error.message);

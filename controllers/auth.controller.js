@@ -23,7 +23,7 @@ const createAccount = async (req, res) => {
 
 const loginUser = async (req, res) => {
   const { email, password } = req.body;
-  const { token, refreshToken, user } = await authService.login(
+  const { token, refreshToken, user, roles } = await authService.login(
     email,
     password
   );
@@ -37,6 +37,7 @@ const loginUser = async (req, res) => {
   res.status(200).json({
     token,
     user,
+    roles
   });
 };
 
