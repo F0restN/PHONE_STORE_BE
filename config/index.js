@@ -20,13 +20,13 @@ const pool = new Pool({
     */
   ssl: false
 });
-// console.log(path.join(__dirname, "init.sql"))
-// var sql = fs.readFileSync(path.join(__dirname, "user.sql")).toString()
-// pool.query(sql, function (err, result) {
-//   if (err) {
-//     console.log(err)
-//   }
-// })
+console.log(path.join(__dirname, "init.sql"))
+var sql = fs.readFileSync(path.join(__dirname, "user.sql")).toString()
+pool.query(sql, function (err, result) {
+  if (err) {
+    console.log(err)
+  }
+})
 module.exports = {
   query: (text, params) => pool.query(text, params),
   end: () => pool.end(),
