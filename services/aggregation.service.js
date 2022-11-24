@@ -28,7 +28,10 @@ class AggregationService {
 
     salesByBusiness = async () => {
         try {
-            const result = await getSalesbyBusinessDB();
+            let result = await getSalesbyBusinessDB();
+            result = result.map((val) => {
+                return { ...val, sum: Number(val?.sum) }
+            })
             if (!result) {
                 throw new ErrorHandler(404, "Order does not exist");
             }
@@ -39,14 +42,22 @@ class AggregationService {
     };
     topCate = async () => {
         try {
-            return await getTopCateDB()
+            let result = await getTopCateDB();
+            result = result.map((val) => {
+                return { ...val, sum: Number(val?.sum) }
+            })
+            return result;
         } catch (error) {
             throw new ErrorHandler(error.statusCode, error.message);
         }
     }
     salesbyRegion = async () => {
         try {
-            return await getSalesbyRegionDB()
+            let result = await getSalesbyRegionDB()
+            result = result.map((val) => {
+                return { ...val, sum: Number(val?.sum) }
+            })
+            return result
         } catch (error) {
             throw new ErrorHandler(error.statusCode, error.message);
         }
