@@ -52,7 +52,7 @@ const updateProductDb = async ({ name, price, description, image_url, id }) => {
 	return product[0];
 };
 
-const deleteProductDb = async (id) => {
+const deleteProductDb = async ({ id }) => {
 	const { rows } = await pool.query(
 		"DELETE FROM products where product_id = $1 returning *",
 		[id]

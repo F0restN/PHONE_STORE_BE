@@ -64,7 +64,7 @@ class ProductService {
 
 	removeProduct = async (id) => {
 		try {
-			const product = await deleteProductDb(id);
+			const product = await getProductDb(id);
 			if (!product) {
 				throw new ErrorHandler(404, "product not found");
 			}
