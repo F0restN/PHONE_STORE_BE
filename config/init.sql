@@ -126,7 +126,7 @@ CREATE TYPE "business_type" AS ENUM (
 CREATE TABLE public.users
 (
     user_id SERIAL NOT NULL,
-    pwd character varying(200),
+    password character varying(200),
     email character varying(100) UNIQUE NOT NULL,
     fullname character varying(100) NOT NULL,
     username character varying(50) UNIQUE NOT NULL,
