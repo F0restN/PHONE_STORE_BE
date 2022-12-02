@@ -47,11 +47,12 @@ const updateUserDb = async ({
   city,
   state,
   country,
+  business
 }) => {
   const { rows: user } = await pool.query(
-    `UPDATE users set username = $1, email = $2, fullname = $3, address = $4, city = $5, state = $6, country = $7 
-      where user_id = $8 returning username, email, fullname, user_id, address, city, country, state`,
-    [username, email, fullname, address, city, state, country, id]
+    `UPDATE users set username = $1, email = $2, fullname = $3, address = $4, city = $5, state = $6, country = $7, business = $8
+      where user_id = $9 returning username, email, fullname, user_id, address, city, country, state, business`,
+    [username, email, fullname, address, city, state, country, business, id]
   );
   return user[0];
 };

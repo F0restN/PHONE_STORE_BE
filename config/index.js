@@ -3,6 +3,7 @@ const { Pool } = require("pg");
 const fs = require('fs')
 const path = require('path')
 
+
 const isProduction = process.env.NODE_ENV === "production";
 const database =
   process.env.NODE_ENV === "test"
@@ -19,12 +20,25 @@ const pool = new Pool({
     */
   ssl: false
 });
-var sql = fs.readFileSync(path.join(__dirname, "user.sql")).toString()
-pool.query(sql, function (err, result) {
-  if (err) {
-    console.log(err)
-  }
-})
+
+// run this to create schema
+// var file = fs.readFileSync(path.join(__dirname, "init.sql")).toString()
+// pool.query(file, function (err) {
+//   if (err) {
+//     console.log(err)
+//   }
+// })
+
+
+// Run this for inserting data
+// var file = fs.readFileSync(path.join(__dirname, "data.sql")).toString()
+// pool.query(file, function (err) {
+//   if (err) {
+//     console.log(err)
+//   }
+// })
+
+
 module.exports = {
   query: (text, params) => pool.query(text, params),
   end: () => pool.end(),
