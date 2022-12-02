@@ -7,13 +7,14 @@ const createOrderDb = async ({
   userId,
   ref,
   paymentMethod,
+  products
 }) => {
   // create an order
   const { rows: order } = await pool.query(
     "INSERT INTO orders(user_id, status, amount, total, ref, payment_method) VALUES($1, 'complete', $2, $3, $4, $5) returning *",
     [userId, amount, itemTotal, ref, paymentMethod]
   );
-
+  
   // copy cart items from the current cart_item table into order_item table
   await pool.query(
     `
@@ -23,6 +24,9 @@ const createOrderDb = async ({
       `,
     [order[0].order_id, cartId]
   );
+  for (const [key, value] of Object.entries(products)) {
+    await pool.query("UPDATE products SET inventory = inventory - $1 WHERE product_id = $2", [value, key])
+  }
   return order[0];
 };
 

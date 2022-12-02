@@ -2,7 +2,7 @@ const orderService = require("../services/order.service");
 const cartService = require("../services/cart.service");
 
 const createOrder = async (req, res) => {
-  const { amount, itemTotal, paymentMethod, ref } = req.body;
+  const { amount, itemTotal, paymentMethod, ref, products } = req.body;
   const userId = req.user.id;
   const cartId = req.user.cart_id;
 
@@ -13,6 +13,7 @@ const createOrder = async (req, res) => {
     userId,
     paymentMethod,
     ref,
+    products
   });
 
   // delete all items from cart_items table for the user after order has been processed
