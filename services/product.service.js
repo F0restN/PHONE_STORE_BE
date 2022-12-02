@@ -52,7 +52,7 @@ class ProductService {
 
 	updateProduct = async (data) => {
 		try {
-			const product = await updateProductDb(data.id);
+			const product = await getProductDb(data);
 			if (!product) {
 				throw new ErrorHandler(404, "product not found");
 			}

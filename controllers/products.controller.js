@@ -23,13 +23,12 @@ const getProductByName = async (req, res) => {
 	res.status(200).json(product);
 };
 const updateProduct = async (req, res) => {
-	const { name, price, description } = req.body;
+	const { name, inventory } = req.body;
 	const { id } = req.params;
 
 	const updatedProduct = await productService.updateProduct({
 		name,
-		price,
-		description,
+		inventory,
 		id,
 	});
 	res.status(200).json(updatedProduct);
