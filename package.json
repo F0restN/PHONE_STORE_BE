@@ -21,7 +21,10 @@
       "/node_modules/"
     ]
   },
-  "keywords": [],
+  "keywords": [
+    "example",
+    "heroku"
+  ],
   "author": "",
   "license": "ISC",
   "dependencies": {
