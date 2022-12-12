@@ -10,7 +10,7 @@ const database =
     : process.env.PGDATABASE;
 
 // const connectionString = `postgresql://${process.env.PGUSER}:${process.env.PGPASSWORD}@${process.env.PGHOST}:${process.env.PGPORT}/${database}`;
-const connectionString = `postgres://aneqosrshbxbhl:dd20cf3b8639ad7b062c0eb4424259cfa7ad7e981b728324a2c043f108358c9e@ec2-44-194-92-192.compute-1.amazonaws.com:5432/darnjs34g4majb`;
+const connectionString = `postgres://jckpuspkoirklj:79b5a278edc1185fe1c0fc2e3147e569cf12227a82f65eaed21f2633686c35ac@ec2-18-215-96-22.compute-1.amazonaws.com:5432/dasgh94dho6v05`;
 
 const pool = new Pool({
   connectionString: connectionString,
