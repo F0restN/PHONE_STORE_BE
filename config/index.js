@@ -19,7 +19,10 @@ const pool = new Pool({
     Alternatively, you can omit the ssl configuration object if you specify the PGSSLMODE config var: heroku config:set PGSSLMODE=no-verify
     See https://devcenter.heroku.com/articles/heroku-postgresql#connecting-in-node-js
     */
-  ssl: false,
+  // ssl: false,
+  ssl: {
+    rejectUnauthorized: false,
+  },
 });
 
 // run this to create schema
